@@ -103,6 +103,68 @@ def scrape_page_with_selenium(url, selectors):
                     if not found_value:
                         data[key] = None
 
+                elif key == "N° Procedura":
+                    # Locate containers matching the main selector
+                    containers = driver.find_elements(By.CSS_SELECTOR, selector)
+                    found_value = False
+                    for container in containers:
+                        try:
+                            # Find the label element
+                            label_element = container.find_element(By.CSS_SELECTOR, "div.gui-text-tile-title")
+                            if "N° Procedura" in label_element.text.strip():
+                                # Find the sibling value element
+                                value_element = container.find_element(By.CSS_SELECTOR,
+                                                                       "div.gui-text-tile-text.text-bold")
+                                data[key] = value_element.text.strip()
+                                found_value = True
+                                break
+                        except Exception as e:
+                            print(f"Error while processing '{key}' in a container: {e}")
+
+                    if not found_value:
+                        data[key] = None
+
+                elif key == "Anno Procedura":
+                    # Locate containers matching the main selector
+                    containers = driver.find_elements(By.CSS_SELECTOR, selector)
+                    found_value = False
+                    for container in containers:
+                        try:
+                            # Find the label element
+                            label_element = container.find_element(By.CSS_SELECTOR, "div.gui-text-tile-title")
+                            if "Anno Procedura" in label_element.text.strip():
+                                # Find the sibling value element
+                                value_element = container.find_element(By.CSS_SELECTOR,"div.gui-text-tile-text.text-bold")
+                                data[key] = value_element.text.strip()
+                                found_value = True
+                                break
+                        except Exception as e:
+                            print(f"Error while processing '{key}' in a container: {e}")
+
+                    if not found_value:
+                        data[key] = None
+
+                elif key == "N° Procedura":
+                    # Use a valid selector for the container
+                    containers = driver.find_elements(By.CSS_SELECTOR, "gui-text-tile")
+                    found_value = False
+                    for container in containers:
+                        try:
+                            # Check for label matching 'N° Procedura'
+                            label_element = container.find_element(By.CSS_SELECTOR, "div.gui-text-tile-title")
+                            if "N° Procedura" in label_element.text.strip():
+                                # Extract value from sibling element
+                                value_element = container.find_element(By.CSS_SELECTOR,
+                                                                       "div.gui-text-tile-text.text-bold")
+                                data[key] = value_element.text.strip()
+                                found_value = True
+                                break
+                        except Exception as e:
+                            print(f"Error while processing '{key}' in a container: {e}")
+
+                    if not found_value:
+                        data[key] = None
+
                 elif key == "Tipologia":
                     # Similar logic for "Data Vendita"
                     containers = driver.find_elements(By.CSS_SELECTOR, selector)
