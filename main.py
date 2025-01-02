@@ -35,6 +35,8 @@ def on_submit():
                 "description": "span.corpus-s.gui-dettaglio-annuncio-desc-text",
                 "Data Vendita": "div.gui-text-tile-container.text-regular.corpus-s.align-text-start.flex-column",
                 "Tribunale": "div.gui-text-tile-container.text-regular.corpus-s.align-text-start.flex-column",
+                "N° Procedura": "gui-text-tile",
+                "Anno Procedura": "gui-text-tile",
                 "Tipologia": "div.row"  # Parent container for Tipologia
             }
 
