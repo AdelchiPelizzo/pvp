@@ -1,21 +1,21 @@
 === Entry ===
-{'Id': '4298544', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=4298544', 'description': 'Terreno agricolo di 15.640 mq sito a Vasto (CH), in localita Cono a Mare. Per maggiori informazioni visitare il portale www.quimmo.it - Codice annuncio 21728', 'Data Vendita': '14/03/2025 10:00', 'Tribunale': 'Tribunale di SPOLETO', 'N° Procedura': '1', 'Anno Procedura': '2020', 'Tipologia': 'Terreno'}
+{'Id': '4298544', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=4298544', 'description': 'Terreno agricolo di 15.640 mq sito a Vasto (CH), in localita Cono a Mare. Per maggiori informazioni visitare il portale www.quimmo.it - Codice annuncio 21728', 'Data Vendita': '14/03/2025 10:00', 'Tribunale': 'Tribunale di SPOLETO', 'Tipologia': 'Terreno'}
 
 === Entry ===
-{'Id': '4235584', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=4235584', 'description': 'Terreno agricolo di 15.640 mq sito a Vasto (CH), in localita Cono a Mare. Per maggiori informazioni visitare il portale www.quimmo.it - Codice annuncio 21728', 'Data Vendita': '08/11/2024 10:00', 'Tribunale': 'Tribunale di SPOLETO', 'N° Procedura': '1', 'Anno Procedura': '2020', 'Tipologia': 'Terreno'}
+{'Id': '4235584', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=4235584', 'description': 'Terreno agricolo di 15.640 mq sito a Vasto (CH), in localita Cono a Mare. Per maggiori informazioni visitare il portale www.quimmo.it - Codice annuncio 21728', 'Data Vendita': '08/11/2024 10:00', 'Tribunale': 'Tribunale di SPOLETO', 'Tipologia': 'Terreno'}
 
 === Entry ===
-{'Id': '2189932', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=2189932', 'description': 'Terreno agricolo di 15.640 mq sito a Vasto (CH), in localita Cono a Mare. Per maggiori informazioni visitare il portale www.quimmo.it - Codice annuncio 21728', 'Data Vendita': '19/07/2024 10:00', 'Tribunale': 'Tribunale di SPOLETO', 'N° Procedura': '1', 'Anno Procedura': '2020', 'Tipologia': 'Terreno'}
+{'Id': '2189932', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=2189932', 'description': 'Terreno agricolo di 15.640 mq sito a Vasto (CH), in localita Cono a Mare. Per maggiori informazioni visitare il portale www.quimmo.it - Codice annuncio 21728', 'Data Vendita': '19/07/2024 10:00', 'Tribunale': 'Tribunale di SPOLETO', 'Tipologia': 'Terreno'}
 
 === Entry ===
-{'Id': '2103564', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=2103564', 'description': 'Terreno agricolo di 15.640 mq sito a Vasto (CH), in localita Cono a Mare. Per maggiori informazioni visitare il portale www.quimmo.it - Codice annuncio 21728', 'Data Vendita': '12/04/2024 10:00', 'Tribunale': 'Tribunale di SPOLETO', 'N° Procedura': '1', 'Anno Procedura': '2020', 'Tipologia': 'Terreno'}
+{'Id': '2103564', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=2103564', 'description': 'Terreno agricolo di 15.640 mq sito a Vasto (CH), in localita Cono a Mare. Per maggiori informazioni visitare il portale www.quimmo.it - Codice annuncio 21728', 'Data Vendita': '12/04/2024 10:00', 'Tribunale': 'Tribunale di SPOLETO', 'Tipologia': 'Terreno'}
 
 === Entry ===
-{'Id': '1357765', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=1357765', 'description': 'Appartamento per civile abitazione al piano secondo del maggior fabbricato, composto da pranzo-soggiorno, due camere, bagno, disimpegno. Completa la consistenza dell’immobile un garage al piano seminterrato di mq.22.', 'Data Vendita': '13/10/2021 12:00', 'Tribunale': 'Tribunale di LATINA', 'N° Procedura': '77', 'Anno Procedura': '2018', 'Tipologia': 'Appartamento'}
+{'Id': '1357765', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=1357765', 'description': 'Appartamento per civile abitazione al piano secondo del maggior fabbricato, composto da pranzo-soggiorno, due camere, bagno, disimpegno. Completa la consistenza dell’immobile un garage al piano seminterrato di mq.22.', 'Data Vendita': '13/10/2021 12:00', 'Tribunale': 'Tribunale di LATINA', 'Tipologia': 'Appartamento'}
 
 === Entry ===
-{'Id': '1096498', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=1096498', 'description': 'IMMOBILE ADIBITO A RISTORANTE SU DUE LIVELLI', 'Data Vendita': '18/02/2021 16:00', 'Tribunale': 'Tribunale di VASTO', 'N° Procedura': '90', 'Anno Procedura': '2016', 'Tipologia': 'Negozi, Botteghe'}
+{'Id': '1096498', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=1096498', 'description': 'IMMOBILE ADIBITO A RISTORANTE SU DUE LIVELLI', 'Data Vendita': '18/02/2021 16:00', 'Tribunale': 'Tribunale di VASTO', 'Tipologia': 'Negozi, Botteghe'}
 
 === Entry ===
-{'Id': '115667', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=115667', 'description': 'AMPIO BOX MQ 105, SITUATO IN VASTO MARINA, ZONA CENTRALE', 'Data Vendita': '15/05/2018 16:00', 'Tribunale': 'Tribunale di FOGGIA', 'N° Procedura': '33', 'Anno Procedura': '2011', 'Tipologia': 'Magazzini E Locali Di Deposito'}
+{'Id': '115667', 'URL': 'https://pvp.giustizia.it/pvp/it/detail_annuncio.page?idAnnuncio=115667', 'description': 'AMPIO BOX MQ 105, SITUATO IN VASTO MARINA, ZONA CENTRALE', 'Data Vendita': '15/05/2018 16:00', 'Tribunale': 'Tribunale di FOGGIA', 'Tipologia': 'Magazzini E Locali Di Deposito'}
 
