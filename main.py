@@ -3,7 +3,7 @@ from tkinter import messagebox
 from scraper.fetcher import fetch_html
 from scraper.parser import parse_home
 from scraper.parser import scrape_multiple_pages
-from scraper.saver import save_to_csv, save_to_txt
+from scraper.saver import save_to_csv, save_to_txt, save_to_excel, save_styled_excel
 
 
 def on_submit():
@@ -34,17 +34,24 @@ def on_submit():
             selectors = {
                 "description": "span.corpus-s.gui-dettaglio-annuncio-desc-text",
                 "Data Vendita": "div.gui-text-tile-container.text-regular.corpus-s.align-text-start.flex-column",
+                "Data Pubblicazione": "div.gui-text-tile-container.text-regular.corpus-s.align-text-start.flex-column",
+                "Offerta Minima": "div.gui-text-tile-container.text-regular.corpus-s.align-text-start.flex-column",
+                "Prezzo Base": "div.gui-text-tile-container.text-regular.corpus-s.align-text-start.flex-column",
+                "Superficie": "div.row",
                 "Tribunale": "div.gui-text-tile-container.text-regular.corpus-s.align-text-start.flex-column",
                 "N° Procedura": "gui-text-tile",
                 "Anno Procedura": "gui-text-tile",
-                "Tipologia": "div.row"  # Parent container for Tipologia
+                "Tipologia": "div.row",
+                "Lotto nr.": "div.gui-text-tile-container.text-regular.corpus-s.align-text-start.flex-column",
+                "Indirizzo": "span.title-bold.corpus-l",
             }
-
             result = scrape_multiple_pages(data, selectors)
 
             # Save the data to a CSV file
             save_to_csv(result)
             save_to_txt(result)
+            save_to_excel(result, "output.xlsx")
+            save_styled_excel(result)
             submit_button.config(bg=original_bg, fg=original_fg, text="Recupera")
             messagebox.showinfo("Success", f"Data saved successfully!")
         else:

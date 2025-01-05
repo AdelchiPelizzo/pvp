@@ -1,4 +1,3 @@
-import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
@@ -92,8 +91,7 @@ def scrape_page_with_selenium(url, selectors):
                         try:
                             title_element = container.find_element(By.CSS_SELECTOR, "div.gui-text-tile-title")
                             if "Data di vendita" in title_element.text.strip():
-                                value_element = container.find_element(By.CSS_SELECTOR,
-                                                                       "div.gui-text-tile-text.text-bold")
+                                value_element = container.find_element(By.CSS_SELECTOR,"div.gui-text-tile-text.text-bold")
                                 data[key] = value_element.text.strip()
                                 found_value = True
                                 break
@@ -102,6 +100,87 @@ def scrape_page_with_selenium(url, selectors):
 
                     if not found_value:
                         data[key] = None
+
+                elif key == "Data Pubblicazione":
+                    containers = driver.find_elements(By.CSS_SELECTOR, selector)
+                    found_value = False
+                    for container in containers:
+                        try:
+                            title_element = container.find_element(By.CSS_SELECTOR, "div.gui-text-tile-title")
+                            if "Pubblicato sul Portale il" in title_element.text.strip():
+                                # Corrected CSS selector for the value element
+                                value_element = container.find_element(By.CSS_SELECTOR,"div.gui-text-tile-text.text-bold")
+                                data[key] = value_element.text.strip()
+                                found_value = True
+                                break
+                        except Exception as e:
+                            print(f"Error while processing '{key}' in a container: {e}")
+                    if not found_value:
+                        data[key] = None
+
+                elif key == "Offerta Minima":
+                    containers = driver.find_elements(By.CSS_SELECTOR, selector)
+                    found_value = False
+                    for container in containers:
+                        try:
+                            title_element = container.find_element(By.CSS_SELECTOR, "div.gui-text-tile-title")
+                            if "Offerta minima" in title_element.text.strip():
+                                # Corrected CSS selector for the value element
+                                value_element = container.find_element(By.CSS_SELECTOR,"div.gui-text-tile-text.text-bold")
+                                data[key] = value_element.text.strip()
+                                found_value = True
+                                break
+                        except Exception as e:
+                            print(f"Error while processing '{key}' in a container: {e}")
+                    if not found_value:
+                        data[key] = None
+
+                elif key == "Prezzo Base":
+                    containers = driver.find_elements(By.CSS_SELECTOR, selector)
+                    found_value = False
+                    for container in containers:
+                        try:
+                            title_element = container.find_element(By.CSS_SELECTOR, "div.gui-text-tile-title")
+                            if "Prezzo base d'asta" in title_element.text.strip():
+                                # Corrected CSS selector for the value element
+                                value_element = container.find_element(By.CSS_SELECTOR,"div.gui-text-tile-text.text-bold")
+                                data[key] = value_element.text.strip()
+                                found_value = True
+                                break
+                        except Exception as e:
+                            print(f"Error while processing '{key}' in a container: {e}")
+                    if not found_value:
+                        data[key] = None
+
+                elif key == "Superficie":
+                    try:
+                        # Wait for all rows to load
+                        containers = WebDriverWait(driver, 10).until(
+                            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.row")))
+                        print(f"Found {len(containers)} rows.")  # Debug: Number of rows found
+                        found_value = False
+                        for container in containers:
+                            try:
+                                # Locate the title element
+                                title_element = container.find_element(By.CSS_SELECTOR, "div.col-4.text-semibold.corpus-s")
+                                if "Superficie" in title_element.text.strip():
+                                    # Locate the value element
+                                    value_element = container.find_element(By.CSS_SELECTOR, "div.col-8.corpus-s")
+                                    data[key] = value_element.text.strip()
+                                    print(f"Extracted Superficie: {data[key]}")  # Debug: Output extracted value
+                                    found_value = True
+                                    break
+                            except Exception as e:
+                                # Skip containers without the required structure
+                                print(f"Skipping container due to error: {e}")
+                        if not found_value:
+                            # Assign None if "Superficie" field is not found
+                            data[key] = None
+                            print("Superficie field not found on this page.")
+                    except Exception as e:
+                        # Handle cases where rows can't be located
+                        data[key] = None
+                        print(f"Error locating rows: {e}")
 
                 elif key == "N° Procedura":
                     # Locate containers matching the main selector
@@ -184,6 +263,37 @@ def scrape_page_with_selenium(url, selectors):
                     if not found_value:
                         data[key] = None
 
+                elif key == "Lotto nr.":
+                    containers = driver.find_elements(By.CSS_SELECTOR, selector)  # Updated selector used here
+                    print(f"Found {len(containers)} containers for key '{key}'.")
+                    found_value = False
+                    for container in containers:
+                        try:
+                            # Locate the label element
+                            label_element = container.find_element(By.CSS_SELECTOR, "div.gui-text-tile-title")
+                            if "Lotto nr." in label_element.text.strip():  # Check if it matches the desired label
+                                # Locate the sibling value element
+                                value_element = container.find_element(By.CSS_SELECTOR, "div.gui-text-tile-text.text-bold")
+                                data[key] = value_element.text.strip()
+                                found_value = True
+                                print(f"Extracted value for '{key}': {data[key]}")
+                                break  # Exit the loop once found
+                        except Exception as e:
+                            print(f"Error while processing '{key}' in a container: {e}")
+                    if not found_value:
+                        print(f"No matching value found for key '{key}'.")
+                        data[key] = None  # Set as None if no value is found
+
+                elif key == "Indirizzo":
+
+                    elements = driver.find_elements(By.CSS_SELECTOR, selector)
+                    # Find all matching containers for the selector
+                    try:
+                        data[key] =elements[0].text.strip()
+                    except Exception as e:
+                        print(f"Error while processing '{key}' in a container: {e}")
+                        data[key] = None
+
                 else:
                     # General case for other keys
                     elements = driver.find_elements(By.CSS_SELECTOR, selector)
@@ -220,6 +330,7 @@ def scrape_multiple_pages(href_list, selectors):
         if page_data:
             scraped_data.append(page_data)
 
+    print(f"scraped data >>> {scraped_data}")
     return scraped_data
 
 # Example usage
