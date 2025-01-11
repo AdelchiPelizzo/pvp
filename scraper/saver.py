@@ -13,7 +13,7 @@ def save_styled_excel(data):
     worksheet = workbook.add_worksheet()
 
     # Define some formats
-    bold_format = workbook.add_format({'bold': True})
+    bold_format = workbook.add_format({'bold': True, 'bg_color': '#afabed'})
     date_format_with_time = workbook.add_format({'num_format': 'dd/mm/yyyy hh:mm'})  # Include time for Data Vendita
     date_format_without_time = workbook.add_format({'num_format': 'dd/mm/yyyy'})  # Only date for Data Pubblicazione
     currency_format = workbook.add_format({'num_format': '€#,##0.00'})
@@ -24,26 +24,35 @@ def save_styled_excel(data):
     worksheet.set_column('A:A', 10)  # ID
     worksheet.set_column('B:B', 50)  # URL
     worksheet.set_column('C:C', 70)  # Description
-    worksheet.set_column('D:D', 15)  # Data Vendita
+    worksheet.set_column('D:D', 20)  # Data Vendita
     worksheet.set_column('E:E', 15)  # Data Pubblicazione
     worksheet.set_column('F:F', 15)  # Offerta Minima
     worksheet.set_column('G:G', 15)  # Prezzo Base
     worksheet.set_column('H:H', 10)  # Superficie
-    worksheet.set_column('I:I', 20)  # Tribunale
-    worksheet.set_column('J:J', 15)  # N° Procedura
-    worksheet.set_column('K:K', 15)  # Anno Procedura
-    worksheet.set_column('L:L', 20)  # Tipologia
-    worksheet.set_column('M:M', 15)  # Lotto nr.
-    worksheet.set_column('N:N', 50)  # Indirizzo
+    worksheet.set_column('I:I', 15)  # Prezzo/mq
+    worksheet.set_column('J:J', 20)  # Tribunale
+    worksheet.set_column('K:K', 15)  # N° Procedura
+    worksheet.set_column('L:L', 15)  # Anno Procedura
+    worksheet.set_column('M:M', 20)  # Tipologia
+    worksheet.set_column('N:N', 15)  # Lotto nr.
+    worksheet.set_column('O:O', 50)  # Indirizzo
+
+    # Adjust headers to include "Prezzo/mq" after "Superficie"
+    headers = list(data[0].keys())
+    superficie_idx = headers.index("Superficie")
+    headers.insert(superficie_idx + 1, "Prezzo/mq")
 
     # Write headers
-    headers = list(data[0].keys())
     for col, header in enumerate(headers):
         worksheet.write(0, col, header, bold_format)
 
     # Write data rows
     for row_idx, item in enumerate(data, start=1):
         for col_idx, key in enumerate(headers):
+            if key == "Prezzo/mq":
+                # Skip manual entry for "Prezzo/mq" (calculated column)
+                continue
+
             value = item.get(key)
 
             # Apply formatting based on column type
@@ -70,10 +79,39 @@ def save_styled_excel(data):
                     print(f"Error formatting number '{value}' in row {row_idx}, column {col_idx}: {e}")
                     worksheet.write(row_idx, col_idx, value, general_format)
 
+            elif key == 'Superficie' and value:
+                try:
+                    # Remove leading quote before converting to number
+                    clean_value = value.lstrip("'")
+                    worksheet.write_number(row_idx, col_idx, _convert_to_number(clean_value), general_format)
+                except Exception as e:
+                    print(f"Error formatting superficie '{value}' in row {row_idx}, column {col_idx}: {e}")
+                    worksheet.write(row_idx, col_idx, value, general_format)
+
             elif key == 'description' and value:
                 worksheet.write(row_idx, col_idx, value, text_wrap_format)
             else:
                 worksheet.write(row_idx, col_idx, value if value else "", general_format)
+
+        # Calculate 'Prezzo/mq' dynamically and store it directly
+        prezzo_base = item.get("Prezzo Base")
+        superficie = item.get("Superficie")
+        prezzo_mq_col_idx = headers.index("Prezzo/mq")
+
+        if prezzo_base and superficie:
+            try:
+                superficie_value = _convert_to_number(superficie.lstrip("'"))
+                prezzo_base_value = _convert_to_number(prezzo_base)
+                if superficie_value > 0:  # Avoid division by zero
+                    prezzo_mq = prezzo_base_value / superficie_value
+                    worksheet.write(row_idx, prezzo_mq_col_idx, prezzo_mq, currency_format)
+                else:
+                    worksheet.write(row_idx, prezzo_mq_col_idx, "", general_format)
+            except Exception as e:
+                print(f"Error processing Prezzo/mq in row {row_idx}: {e}")
+                worksheet.write(row_idx, prezzo_mq_col_idx, "", general_format)
+        else:
+            worksheet.write(row_idx, prezzo_mq_col_idx, "", general_format)
 
     # Add a filter to make sorting easier in Excel (Optional)
     worksheet.autofilter(0, 0, len(data), len(headers) - 1)
@@ -82,6 +120,8 @@ def save_styled_excel(data):
     workbook.close()
 
     print("Excel file with styling has been saved.")
+
+
 
 def _convert_to_date(date_string, with_time=True):
     """
@@ -183,3 +223,125 @@ def save_to_txt(data, filename="output.txt"):
         print(f"Data saved to {filename}")
     except Exception as e:
         print(f"Error saving data to text file: {e}")
+
+def save_styled_excel_with_formulas_for_prezzo_mq(data):
+    if not data:
+        print("No data to save to Excel.")
+        return
+
+    # Create a new Excel file and add a worksheet
+    workbook = xlsxwriter.Workbook('styled_output.xlsx')
+    worksheet = workbook.add_worksheet()
+
+    # Define some formats
+    bold_format = workbook.add_format({'bold': True})
+    date_format_with_time = workbook.add_format(
+        {'num_format': 'dd/mm/yyyy hh:mm'})  # Include time for Data Vendita
+    date_format_without_time = workbook.add_format(
+        {'num_format': 'dd/mm/yyyy'})  # Only date for Data Pubblicazione
+    currency_format = workbook.add_format({'num_format': '€#,##0.00'})
+    text_wrap_format = workbook.add_format({'text_wrap': True})
+    general_format = workbook.add_format({'border': 1})
+
+    # Set column widths for readability
+    worksheet.set_column('A:A', 10)  # ID
+    worksheet.set_column('B:B', 50)  # URL
+    worksheet.set_column('C:C', 70)  # Description
+    worksheet.set_column('D:D', 20)  # Data Vendita
+    worksheet.set_column('E:E', 15)  # Data Pubblicazione
+    worksheet.set_column('F:F', 15)  # Offerta Minima
+    worksheet.set_column('G:G', 15)  # Prezzo Base
+    worksheet.set_column('H:H', 10)  # Superficie
+    worksheet.set_column('I:I', 15)  # Prezzo/mq
+    worksheet.set_column('J:J', 20)  # Tribunale
+    worksheet.set_column('K:K', 15)  # N° Procedura
+    worksheet.set_column('L:L', 15)  # Anno Procedura
+    worksheet.set_column('M:M', 20)  # Tipologia
+    worksheet.set_column('N:N', 15)  # Lotto nr.
+    worksheet.set_column('O:O', 50)  # Indirizzo
+
+    # Adjust headers to include "Prezzo/mq" after "Superficie"
+    headers = list(data[0].keys())
+    superficie_idx = headers.index("Superficie")
+    headers.insert(superficie_idx + 1, "Prezzo/mq")
+
+    # Write headers
+    for col, header in enumerate(headers):
+        worksheet.write(0, col, header, bold_format)
+
+    # Write data rows
+    for row_idx, item in enumerate(data, start=1):
+        for col_idx, key in enumerate(headers):
+            if key == "Prezzo/mq":
+                # Skip manual entry for "Prezzo/mq" (calculated column)
+                continue
+
+            value = item.get(key)
+
+            # Apply formatting based on column type
+            if key == 'Data Vendita' and value:
+                try:
+                    date_value = _convert_to_date(value, with_time=True)  # Convert to datetime with time
+                    worksheet.write_datetime(row_idx, col_idx, date_value, date_format_with_time)
+                except Exception as e:
+                    print(f"Error formatting date '{value}' in row {row_idx}, column {col_idx}: {e}")
+                    worksheet.write(row_idx, col_idx, value, general_format)
+
+            elif key == 'Data Pubblicazione' and value:
+                try:
+                    date_value = _convert_to_date(value, with_time=False)  # Convert to datetime without time
+                    worksheet.write_datetime(row_idx, col_idx, date_value, date_format_without_time)
+                except Exception as e:
+                    print(f"Error formatting date '{value}' in row {row_idx}, column {col_idx}: {e}")
+                    worksheet.write(row_idx, col_idx, value, general_format)
+
+            elif key in ['Offerta Minima', 'Prezzo Base'] and value:
+                try:
+                    worksheet.write_number(row_idx, col_idx, _convert_to_number(value), currency_format)
+                except Exception as e:
+                    print(f"Error formatting number '{value}' in row {row_idx}, column {col_idx}: {e}")
+                    worksheet.write(row_idx, col_idx, value, general_format)
+
+            elif key == 'Superficie' and value:
+                try:
+                    # Remove leading quote before converting to number
+                    clean_value = value.lstrip("'")
+                    worksheet.write_number(row_idx, col_idx, _convert_to_number(clean_value), general_format)
+                except Exception as e:
+                    print(f"Error formatting superficie '{value}' in row {row_idx}, column {col_idx}: {e}")
+                    worksheet.write(row_idx, col_idx, value, general_format)
+
+            elif key == 'description' and value:
+                worksheet.write(row_idx, col_idx, value, text_wrap_format)
+            else:
+                worksheet.write(row_idx, col_idx, value if value else "", general_format)
+
+        # Add formula for "Prezzo/mq" (column after "Superficie")
+        prezzo_col_idx = headers.index("Prezzo Base")
+        superficie_col_idx = headers.index("Superficie")
+        prezzo_mq_col_idx = headers.index("Prezzo/mq")
+
+        # Write the formula only if "Prezzo Base" and "Superficie" are valid
+        prezzo_base = item.get("Prezzo Base")
+        superficie = item.get("Superficie")
+        if prezzo_base and superficie:
+            try:
+                # Remove leading quote from "Superficie"
+                superficie_value = _convert_to_number(superficie.lstrip("'"))
+                prezzo_base_value = _convert_to_number(prezzo_base)
+                if superficie_value > 0:  # Avoid division by zero
+                    formula = f"=G{row_idx + 1}/H{row_idx + 1}"  # Columns G (Prezzo Base) / H (Superficie)
+                    worksheet.write_formula(row_idx, prezzo_mq_col_idx, formula, currency_format)
+                else:
+                    worksheet.write(row_idx, prezzo_mq_col_idx, "", general_format)
+            except Exception as e:
+                print(f"Error processing Prezzo/mq in row {row_idx}: {e}")
+                worksheet.write(row_idx, prezzo_mq_col_idx, "", general_format)
+
+    # Add a filter to make sorting easier in Excel (Optional)
+    worksheet.autofilter(0, 0, len(data), len(headers) - 1)
+
+    # Close the workbook to save the file
+    workbook.close()
+
+    print("Excel file with styling has been saved.")

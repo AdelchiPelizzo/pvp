@@ -79,9 +79,11 @@ def on_submit_click():
 # Create the main application window
 root = tk.Tk()
 root.title("Auzione")
+# Set the window icon
+root.iconbitmap("tree.ico")
 
 # Style the root window
-root.geometry("270x400")  # Increased height for better spacing
+root.geometry("240x380")  # Increased height for better spacing
 root.configure(bg="#8a90cf")  # Light gray background
 
 # Add padding to the frame and ensure widgets don't overlap
@@ -89,8 +91,8 @@ frame = tk.Frame(
     root,
     padx=5,  # Reduced horizontal padding inside the frame
     pady=5,  # Reduced vertical padding inside the frame
-    bg="#ffffff",
-    relief="groove",
+    bg="#8a90cf",
+    # relief="groove",
     borderwidth=2
 )
 frame.pack(pady=30, padx=30, fill="both", expand=True)
@@ -124,11 +126,12 @@ for field, default_value in fields_with_defaults.items():
         frame,
         text=field.capitalize(),
         font=("Arial", 10),
-        bg="#ffffff",
+        bg="#8a90cf",
+        fg="#ffffff",
         anchor="w"
     )
     label.pack(fill="x", pady=(2, 1))  # Reduced space between the label and the field
-    entry = tk.Entry(frame, font=("Arial", 12), width=15)  # Keep the fields consistent in size
+    entry = tk.Entry(frame, font=("Arial", 12), width=15)  # Keep the fields consistent
     entry.insert(0, default_value)  # Set the default value
     entry.pack(pady=8)  # Reduced vertical padding for the entry field
     entries[field] = entry
